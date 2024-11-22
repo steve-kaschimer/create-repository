@@ -1,0 +1,61 @@
+name: Create Repository
+on:
+  workflow_dispatch:
+    inputs:
+      REPO_NAME:
+        type: string
+        description: 'Name of repository'
+        required: true
+      REPO_DESC:
+        type: string
+        description: 'Description of repository'
+        required: true
+      REPO_TYPE:
+        type: choice
+        description: 'Type of repository'
+        required: true
+        options:
+          - dotnet
+          - python
+          - node
+          - react
+          - iac
+          - bicep-azurerm
+          - terraform-azurerm
+          - action
+          - workflow
+      DATA_CLASSIFICATION:
+        type: choice
+        description: 'Data classification for the application'
+        required: true
+        default: 'Restricted'
+        options:
+          - Public
+          - Internal
+          - Confidential
+          - Restricted
+      ORGANIZATION:
+        type: choice
+        description: 'Organization that will hold the repository'
+        required: true
+        default: 'steve-kaschimer'
+        options:
+          - steve-kaschimer
+      DEV_TEAM:
+        type: choice
+        description: 'Development team that will own repository'
+        required: true
+        options:
+          - steve-kaschimer
+
+jobs:
+  shared:
+    uses: steve-kaschimer/workflow-create-repository/.github/workflows/repo-creator.yml@main
+    secrets: inherit
+    with:
+      REPO_NAME: ${{ inputs.REPO_NAME }}
+      REPO_DESC: ${{ inputs.REPO_DESC }}
+      REPO_TYPE: ${{ inputs.REPO_TYPE }}
+      DATA_CLASSIFICATION:  ${{ inputs.DATA_CLASSIFICATION }}
+      ORGANIZATION: ${{ inputs.ORGANIZATION }}
+      DEV_TEAM: ${{ inputs.DEV_TEAM }}
